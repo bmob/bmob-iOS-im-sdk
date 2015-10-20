@@ -1,0 +1,451 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BE029DE5196FBA6F00D4BDB3 /* BmobIMUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = BE029DE3196FBA6F00D4BDB3 /* BmobIMUtil.h */; };
+		BE029DE6196FBA6F00D4BDB3 /* BmobIMUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = BE029DE4196FBA6F00D4BDB3 /* BmobIMUtil.m */; };
+		BE142C2C1962ACF40007BA6F /* BmobIMSaveMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = BE142C2A1962ACF40007BA6F /* BmobIMSaveMessage.h */; };
+		BE142C2D1962ACF40007BA6F /* BmobIMSaveMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = BE142C2B1962ACF40007BA6F /* BmobIMSaveMessage.m */; };
+		BE33AD941952D8F000ADC677 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE33AD931952D8F000ADC677 /* CoreFoundation.framework */; };
+		BE33AD9A1952D8F000ADC677 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE33AD981952D8F000ADC677 /* InfoPlist.strings */; };
+		BE33ADA11952D91700ADC677 /* BmobChat.m in Sources */ = {isa = PBXBuildFile; fileRef = BE33ADA01952D91700ADC677 /* BmobChat.m */; };
+		BE33ADA41952D9BB00ADC677 /* BmobChat.h in Headers */ = {isa = PBXBuildFile; fileRef = BE33AD9F1952D91700ADC677 /* BmobChat.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BE33ADA51952D9CB00ADC677 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE33AD681952D8C100ADC677 /* Foundation.framework */; };
+		BE6CAAC119655FDE001A89C6 /* BmobIMUrlRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = BE6CAABF19655FDE001A89C6 /* BmobIMUrlRequest.h */; };
+		BE6CAAC219655FDE001A89C6 /* BmobIMUrlRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6CAAC019655FDE001A89C6 /* BmobIMUrlRequest.m */; };
+		BE6E0AB21957C38400796F38 /* BmobInvitation.h in Headers */ = {isa = PBXBuildFile; fileRef = BE6E0AB01957C38400796F38 /* BmobInvitation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BE6E0AB31957C38400796F38 /* BmobInvitation.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6E0AB11957C38400796F38 /* BmobInvitation.m */; };
+		BE6E0AB61957CBBE00796F38 /* BmobRecent.h in Headers */ = {isa = PBXBuildFile; fileRef = BE6E0AB41957CBBE00796F38 /* BmobRecent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BE6E0AB71957CBBE00796F38 /* BmobRecent.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6E0AB51957CBBE00796F38 /* BmobRecent.m */; };
+		BE6E0ABE19580DBC00796F38 /* BmobUserManager.h in Headers */ = {isa = PBXBuildFile; fileRef = BE6E0ABC19580DBC00796F38 /* BmobUserManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BE6E0ABF19580DBC00796F38 /* BmobUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6E0ABD19580DBC00796F38 /* BmobUserManager.m */; };
+		BE7177571953CDCD009B5BD4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE7177561953CDCD009B5BD4 /* SystemConfiguration.framework */; };
+		BE7177591953CDD9009B5BD4 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE7177581953CDD9009B5BD4 /* CoreTelephony.framework */; };
+		BE71775D1953D119009B5BD4 /* BmobSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE71775C1953D119009B5BD4 /* BmobSDK.framework */; };
+		BE7177601953D585009B5BD4 /* BmobChatInstalltion.h in Headers */ = {isa = PBXBuildFile; fileRef = BE71775E1953D585009B5BD4 /* BmobChatInstalltion.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BE7177611953D585009B5BD4 /* BmobChatInstalltion.m in Sources */ = {isa = PBXBuildFile; fileRef = BE71775F1953D585009B5BD4 /* BmobChatInstalltion.m */; };
+		BE7177641953E570009B5BD4 /* BmobChatManager.h in Headers */ = {isa = PBXBuildFile; fileRef = BE7177621953E570009B5BD4 /* BmobChatManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BE7177651953E570009B5BD4 /* BmobChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7177631953E570009B5BD4 /* BmobChatManager.m */; };
+		BE71776819540C33009B5BD4 /* BmobMsg.h in Headers */ = {isa = PBXBuildFile; fileRef = BE71776619540C33009B5BD4 /* BmobMsg.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BE71776919540C33009B5BD4 /* BmobMsg.m in Sources */ = {isa = PBXBuildFile; fileRef = BE71776719540C33009B5BD4 /* BmobMsg.m */; };
+		BE71776C19540C7F009B5BD4 /* BmobChatUser.h in Headers */ = {isa = PBXBuildFile; fileRef = BE71776A19540C7F009B5BD4 /* BmobChatUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BE71776D19540C7F009B5BD4 /* BmobChatUser.m in Sources */ = {isa = PBXBuildFile; fileRef = BE71776B19540C7F009B5BD4 /* BmobChatUser.m */; };
+		BE717773195421DF009B5BD4 /* BmobIM.h in Headers */ = {isa = PBXBuildFile; fileRef = BE717772195421DF009B5BD4 /* BmobIM.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BE71777D1954519A009B5BD4 /* BmobDB.h in Headers */ = {isa = PBXBuildFile; fileRef = BE71777B1954519A009B5BD4 /* BmobDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BE71777E1954519A009B5BD4 /* BmobDB.m in Sources */ = {isa = PBXBuildFile; fileRef = BE71777C1954519A009B5BD4 /* BmobDB.m */; };
+		BE717780195451B9009B5BD4 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE71777F195451B9009B5BD4 /* libsqlite3.dylib */; };
+		BE878C1E195ABB5200A58A7C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE878C1D195ABB5200A58A7C /* UIKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		BE029DE3196FBA6F00D4BDB3 /* BmobIMUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BmobIMUtil.h; sourceTree = "<group>"; };
+		BE029DE4196FBA6F00D4BDB3 /* BmobIMUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BmobIMUtil.m; sourceTree = "<group>"; };
+		BE142C2A1962ACF40007BA6F /* BmobIMSaveMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BmobIMSaveMessage.h; sourceTree = "<group>"; };
+		BE142C2B1962ACF40007BA6F /* BmobIMSaveMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BmobIMSaveMessage.m; sourceTree = "<group>"; };
+		BE33AD681952D8C100ADC677 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		BE33AD761952D8C100ADC677 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		BE33AD921952D8F000ADC677 /* BmobIM.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BmobIM.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE33AD931952D8F000ADC677 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		BE33AD971952D8F000ADC677 /* BmobIM-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BmobIM-Info.plist"; sourceTree = "<group>"; };
+		BE33AD991952D8F000ADC677 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BE33AD9B1952D8F000ADC677 /* BmobIM-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BmobIM-Prefix.pch"; sourceTree = "<group>"; };
+		BE33AD9F1952D91700ADC677 /* BmobChat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BmobChat.h; sourceTree = "<group>"; };
+		BE33ADA01952D91700ADC677 /* BmobChat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BmobChat.m; sourceTree = "<group>"; };
+		BE6CAABF19655FDE001A89C6 /* BmobIMUrlRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BmobIMUrlRequest.h; sourceTree = "<group>"; };
+		BE6CAAC019655FDE001A89C6 /* BmobIMUrlRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BmobIMUrlRequest.m; sourceTree = "<group>"; };
+		BE6E0AB01957C38400796F38 /* BmobInvitation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BmobInvitation.h; sourceTree = "<group>"; };
+		BE6E0AB11957C38400796F38 /* BmobInvitation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BmobInvitation.m; sourceTree = "<group>"; };
+		BE6E0AB41957CBBE00796F38 /* BmobRecent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BmobRecent.h; sourceTree = "<group>"; };
+		BE6E0AB51957CBBE00796F38 /* BmobRecent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BmobRecent.m; sourceTree = "<group>"; };
+		BE6E0ABC19580DBC00796F38 /* BmobUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BmobUserManager.h; sourceTree = "<group>"; };
+		BE6E0ABD19580DBC00796F38 /* BmobUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BmobUserManager.m; sourceTree = "<group>"; };
+		BE7177561953CDCD009B5BD4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		BE7177581953CDD9009B5BD4 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		BE71775C1953D119009B5BD4 /* BmobSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BmobSDK.framework; sourceTree = "<group>"; };
+		BE71775E1953D585009B5BD4 /* BmobChatInstalltion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BmobChatInstalltion.h; sourceTree = "<group>"; };
+		BE71775F1953D585009B5BD4 /* BmobChatInstalltion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BmobChatInstalltion.m; sourceTree = "<group>"; };
+		BE7177621953E570009B5BD4 /* BmobChatManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BmobChatManager.h; sourceTree = "<group>"; };
+		BE7177631953E570009B5BD4 /* BmobChatManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BmobChatManager.m; sourceTree = "<group>"; };
+		BE71776619540C33009B5BD4 /* BmobMsg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BmobMsg.h; sourceTree = "<group>"; };
+		BE71776719540C33009B5BD4 /* BmobMsg.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BmobMsg.m; sourceTree = "<group>"; };
+		BE71776A19540C7F009B5BD4 /* BmobChatUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BmobChatUser.h; sourceTree = "<group>"; };
+		BE71776B19540C7F009B5BD4 /* BmobChatUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BmobChatUser.m; sourceTree = "<group>"; };
+		BE717772195421DF009B5BD4 /* BmobIM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BmobIM.h; sourceTree = "<group>"; };
+		BE71777B1954519A009B5BD4 /* BmobDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BmobDB.h; sourceTree = "<group>"; };
+		BE71777C1954519A009B5BD4 /* BmobDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BmobDB.m; sourceTree = "<group>"; };
+		BE71777F195451B9009B5BD4 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		BE878C1D195ABB5200A58A7C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BE33AD8F1952D8F000ADC677 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE878C1E195ABB5200A58A7C /* UIKit.framework in Frameworks */,
+				BE717780195451B9009B5BD4 /* libsqlite3.dylib in Frameworks */,
+				BE7177591953CDD9009B5BD4 /* CoreTelephony.framework in Frameworks */,
+				BE7177571953CDCD009B5BD4 /* SystemConfiguration.framework in Frameworks */,
+				BE33ADA51952D9CB00ADC677 /* Foundation.framework in Frameworks */,
+				BE33AD941952D8F000ADC677 /* CoreFoundation.framework in Frameworks */,
+				BE71775D1953D119009B5BD4 /* BmobSDK.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BE33AD5C1952D8C100ADC677 = {
+			isa = PBXGroup;
+			children = (
+				BE33AD951952D8F000ADC677 /* BmobIM */,
+				BE33AD671952D8C100ADC677 /* Frameworks */,
+				BE33AD661952D8C100ADC677 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BE33AD661952D8C100ADC677 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BE33AD921952D8F000ADC677 /* BmobIM.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BE33AD671952D8C100ADC677 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BE878C1D195ABB5200A58A7C /* UIKit.framework */,
+				BE71777F195451B9009B5BD4 /* libsqlite3.dylib */,
+				BE71775C1953D119009B5BD4 /* BmobSDK.framework */,
+				BE7177581953CDD9009B5BD4 /* CoreTelephony.framework */,
+				BE7177561953CDCD009B5BD4 /* SystemConfiguration.framework */,
+				BE33AD681952D8C100ADC677 /* Foundation.framework */,
+				BE33AD761952D8C100ADC677 /* XCTest.framework */,
+				BE33AD931952D8F000ADC677 /* CoreFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BE33AD951952D8F000ADC677 /* BmobIM */ = {
+			isa = PBXGroup;
+			children = (
+				BE33ADA21952D91D00ADC677 /* class */,
+				BE33AD961952D8F000ADC677 /* Supporting Files */,
+			);
+			path = BmobIM;
+			sourceTree = "<group>";
+		};
+		BE33AD961952D8F000ADC677 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BE33AD971952D8F000ADC677 /* BmobIM-Info.plist */,
+				BE33AD981952D8F000ADC677 /* InfoPlist.strings */,
+				BE33AD9B1952D8F000ADC677 /* BmobIM-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BE33ADA21952D91D00ADC677 /* class */ = {
+			isa = PBXGroup;
+			children = (
+				BE33AD9F1952D91700ADC677 /* BmobChat.h */,
+				BE33ADA01952D91700ADC677 /* BmobChat.m */,
+				BE71775E1953D585009B5BD4 /* BmobChatInstalltion.h */,
+				BE71775F1953D585009B5BD4 /* BmobChatInstalltion.m */,
+				BE7177621953E570009B5BD4 /* BmobChatManager.h */,
+				BE7177631953E570009B5BD4 /* BmobChatManager.m */,
+				BE71776619540C33009B5BD4 /* BmobMsg.h */,
+				BE71776719540C33009B5BD4 /* BmobMsg.m */,
+				BE71776A19540C7F009B5BD4 /* BmobChatUser.h */,
+				BE71776B19540C7F009B5BD4 /* BmobChatUser.m */,
+				BE717772195421DF009B5BD4 /* BmobIM.h */,
+				BE71777B1954519A009B5BD4 /* BmobDB.h */,
+				BE71777C1954519A009B5BD4 /* BmobDB.m */,
+				BE6E0AB01957C38400796F38 /* BmobInvitation.h */,
+				BE6E0AB11957C38400796F38 /* BmobInvitation.m */,
+				BE6E0AB41957CBBE00796F38 /* BmobRecent.h */,
+				BE6E0AB51957CBBE00796F38 /* BmobRecent.m */,
+				BE6E0ABC19580DBC00796F38 /* BmobUserManager.h */,
+				BE6E0ABD19580DBC00796F38 /* BmobUserManager.m */,
+				BE142C2A1962ACF40007BA6F /* BmobIMSaveMessage.h */,
+				BE142C2B1962ACF40007BA6F /* BmobIMSaveMessage.m */,
+				BE6CAABF19655FDE001A89C6 /* BmobIMUrlRequest.h */,
+				BE6CAAC019655FDE001A89C6 /* BmobIMUrlRequest.m */,
+				BE029DE3196FBA6F00D4BDB3 /* BmobIMUtil.h */,
+				BE029DE4196FBA6F00D4BDB3 /* BmobIMUtil.m */,
+			);
+			name = class;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		BE33ADA31952D9B600ADC677 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE7177641953E570009B5BD4 /* BmobChatManager.h in Headers */,
+				BE6E0ABE19580DBC00796F38 /* BmobUserManager.h in Headers */,
+				BE7177601953D585009B5BD4 /* BmobChatInstalltion.h in Headers */,
+				BE6E0AB61957CBBE00796F38 /* BmobRecent.h in Headers */,
+				BE71776C19540C7F009B5BD4 /* BmobChatUser.h in Headers */,
+				BE6E0AB21957C38400796F38 /* BmobInvitation.h in Headers */,
+				BE6CAAC119655FDE001A89C6 /* BmobIMUrlRequest.h in Headers */,
+				BE71776819540C33009B5BD4 /* BmobMsg.h in Headers */,
+				BE029DE5196FBA6F00D4BDB3 /* BmobIMUtil.h in Headers */,
+				BE71777D1954519A009B5BD4 /* BmobDB.h in Headers */,
+				BE717773195421DF009B5BD4 /* BmobIM.h in Headers */,
+				BE33ADA41952D9BB00ADC677 /* BmobChat.h in Headers */,
+				BE142C2C1962ACF40007BA6F /* BmobIMSaveMessage.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		BE33AD911952D8F000ADC677 /* BmobIM */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BE33AD9C1952D8F000ADC677 /* Build configuration list for PBXNativeTarget "BmobIM" */;
+			buildPhases = (
+				BE33AD8E1952D8F000ADC677 /* Sources */,
+				BE33AD8F1952D8F000ADC677 /* Frameworks */,
+				BE33AD901952D8F000ADC677 /* Resources */,
+				BE33ADA31952D9B600ADC677 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BmobIM;
+			productName = BmobIM;
+			productReference = BE33AD921952D8F000ADC677 /* BmobIM.framework */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BE33AD5D1952D8C100ADC677 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = bmob;
+			};
+			buildConfigurationList = BE33AD601952D8C100ADC677 /* Build configuration list for PBXProject "BmobIM" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = BE33AD5C1952D8C100ADC677;
+			productRefGroup = BE33AD661952D8C100ADC677 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BE33AD911952D8F000ADC677 /* BmobIM */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BE33AD901952D8F000ADC677 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE33AD9A1952D8F000ADC677 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BE33AD8E1952D8F000ADC677 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE6E0AB71957CBBE00796F38 /* BmobRecent.m in Sources */,
+				BE6E0AB31957C38400796F38 /* BmobInvitation.m in Sources */,
+				BE7177651953E570009B5BD4 /* BmobChatManager.m in Sources */,
+				BE029DE6196FBA6F00D4BDB3 /* BmobIMUtil.m in Sources */,
+				BE6CAAC219655FDE001A89C6 /* BmobIMUrlRequest.m in Sources */,
+				BE71777E1954519A009B5BD4 /* BmobDB.m in Sources */,
+				BE33ADA11952D91700ADC677 /* BmobChat.m in Sources */,
+				BE142C2D1962ACF40007BA6F /* BmobIMSaveMessage.m in Sources */,
+				BE6E0ABF19580DBC00796F38 /* BmobUserManager.m in Sources */,
+				BE71776D19540C7F009B5BD4 /* BmobChatUser.m in Sources */,
+				BE7177611953D585009B5BD4 /* BmobChatInstalltion.m in Sources */,
+				BE71776919540C33009B5BD4 /* BmobMsg.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		BE33AD981952D8F000ADC677 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BE33AD991952D8F000ADC677 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		BE33AD861952D8C100ADC677 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		BE33AD871952D8C100ADC677 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BE33AD9D1952D8F000ADC677 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BmobIM/BmobIM-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "BmobIM/BmobIM-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LINK_WITH_STANDARD_LIBRARIES = NO;
+				MACH_O_TYPE = staticlib;
+				MACOSX_DEPLOYMENT_TARGET = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		BE33AD9E1952D8F000ADC677 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BmobIM/BmobIM-Prefix.pch";
+				INFOPLIST_FILE = "BmobIM/BmobIM-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LINK_WITH_STANDARD_LIBRARIES = NO;
+				MACH_O_TYPE = staticlib;
+				MACOSX_DEPLOYMENT_TARGET = "";
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BE33AD601952D8C100ADC677 /* Build configuration list for PBXProject "BmobIM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE33AD861952D8C100ADC677 /* Debug */,
+				BE33AD871952D8C100ADC677 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BE33AD9C1952D8F000ADC677 /* Build configuration list for PBXNativeTarget "BmobIM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE33AD9D1952D8F000ADC677 /* Debug */,
+				BE33AD9E1952D8F000ADC677 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BE33AD5D1952D8C100ADC677 /* Project object */;
+}
