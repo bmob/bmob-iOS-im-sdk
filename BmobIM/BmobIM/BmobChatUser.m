@@ -57,18 +57,18 @@
     if (_username != username) {
         _username = nil;
         _username = [username copy];
-        
-        [self setUserName:username];
+        _username = username;
+//        [self setUserName:username];
     }
 }
 
--(NSString*)username{
-    if (!_username) {
-        _username = [self objectForKey:@"username"];
-    }
-    
-    return _username;
-}
+//-(NSString*)username{
+//    if (!_username) {
+//        _username = super;//[self objectForKey:@"username"];
+//    }
+//    
+//    return _username;
+//}
 
 
 @end

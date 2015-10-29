@@ -13,6 +13,8 @@
 
 @interface BmobMsg : NSObject
 
+@property (copy, nonatomic) NSString *mid;
+
 /**
  *  消息发布者的头像
  */
@@ -22,6 +24,11 @@
  *  消息发布者的id
  */
 @property (nonatomic,copy) NSString  *belongId;
+
+/**
+ *  消息接收方的id
+ */
+@property (copy, nonatomic) NSString *toId;
 /**
  *  消息发布者的昵称
  */

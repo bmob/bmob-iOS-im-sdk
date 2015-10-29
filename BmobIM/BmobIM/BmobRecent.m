@@ -33,7 +33,9 @@
     tmpRecent.targetId    = targetId;
     tmpRecent.time        = time;
     tmpRecent.type        = type;
-    tmpRecent.targetName  = targetName;
+    if (targetName) {
+        tmpRecent.targetName  = targetName;
+    }
     
     if (tmpRecent.type == MessageTypeImage) {
         tmpRecent.message     =@"[图片]";

@@ -10,6 +10,8 @@
 
 @interface BmobRecent : NSObject
 
+@property (copy, nonatomic) NSString *mid;
+
 /**
  *  头像
  */
@@ -33,18 +35,23 @@
 /**
  *  时间
  */
-@property(assign)NSInteger      time;
+@property(assign,nonatomic)NSInteger      time;
 
 /**
  *  类型
  */
-@property(assign)NSInteger      type;
+@property(assign,nonatomic)NSInteger      type;
 
 /**
  *  会话对方的用户名
  */
 @property(nonatomic,copy)NSString* targetName;
 
+
+/**
+ *  个数
+ */
+@property(assign,nonatomic)NSInteger      count;
 
 +(instancetype)recentObejectWithAvatarString:(NSString *)avatar
                                      message:(NSString *)message

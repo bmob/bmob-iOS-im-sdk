@@ -9,7 +9,6 @@
 #import "BmobChatManager.h"
 #import "BmobUserManager.h"
 #import <sqlite3.h>
-#import "BmobIMSaveMessage.h"
 #import "BmobIMUrlRequest.h"
 #import "BmobIMUtil.h"
 
@@ -46,9 +45,9 @@
     if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
         BmobUser *user = [BmobUser getCurrentUser];
         NSString *conversationId = [NSString stringWithFormat:@"%@&%@",msg.belongId,user.objectId];
-        NSString *saveChatString = [NSString stringWithFormat:@"insert or replace into chat(conversationid,belongid,belongaccount,belongnick,belongavatar,msgtype,msgtime,content,isreaded,status) vvalues('%@','%@','%@','%@','%@',%ld,'%@','%@',%ld,%ld)",conversationId,msg.belongId,msg.belongUsername,msg.belongNick,msg.belongAvatar,(long)msg.msgType,msg.msgTime,msg.content,(long)msg.isReaded,(long)msg.status];
+        NSString *saveChatString = [NSString stringWithFormat:@"insert or replace into chat(conversationid,belongid,belongaccount,belongnick,belongavatar,msgtype,msgtime,content,isreaded,status) vvalues('%@','%@','%@','%@','%@',%ld, %ld,'%@',%ld,%ld)",conversationId,msg.belongId,msg.belongUsername,msg.belongNick,msg.belongAvatar,(long)msg.msgType,(long)[msg.msgTime integerValue],msg.content,(long)msg.isReaded,(long)msg.status];
         sqlite3_exec(db, [saveChatString UTF8String], NULL, NULL, NULL);
-        NSString *saveRecentString = [NSString stringWithFormat:@"insert or replace into recent(recent_id,recent_username,recent_nick,recent_avatar,last_message,msgtype,msgtime) values('%@','%@','%@','%@','%@',%ld,'%@')",msg.belongId,msg.belongUsername,msg.belongNick,msg.belongAvatar,msg.content,(long)msg.msgType,msg.msgTime];
+        NSString *saveRecentString = [NSString stringWithFormat:@"insert or replace into recent(recent_id,recent_username,recent_nick,recent_avatar,last_message,msgtype,msgtime) values('%@','%@','%@','%@','%@',%ld,%ld)",msg.belongId,msg.belongUsername,msg.belongNick,msg.belongAvatar,msg.content,(long)msg.msgType,(long)[msg.msgTime integerValue]];
         sqlite3_exec(db, [saveRecentString UTF8String], NULL, NULL, NULL);
     }
     sqlite3_close(db);
@@ -144,7 +143,7 @@
                 if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
                     sqlite3_exec(db, "BEGIN", NULL, NULL, NULL);
                     NSTimeInterval time = [[NSDate date] timeIntervalSince1970];
-                    NSString *saveRecentString = [NSString stringWithFormat:@"insert or replace into recent(recent_id,recent_username,recent_nick,recent_avatar,last_message,msgtype,msgtime) values('%@','%@','%@','%@','%@',%d,'%@')",targetId,[object objectForKey:@"username"],[object objectForKey:@"nick"],[object objectForKey:@"avatar"],@"你们已经是好友,可以进行聊天了",MessageTypeText,[NSString stringWithFormat:@"%.0f",time]];
+                    NSString *saveRecentString = [NSString stringWithFormat:@"insert or replace into recent(recent_id,recent_username,recent_nick,recent_avatar,last_message,msgtype,msgtime) values('%@','%@','%@','%@','%@',%d,%d)",targetId,[object objectForKey:@"username"],[object objectForKey:@"nick"],[object objectForKey:@"avatar"],@"你们已经是好友,可以进行聊天了",MessageTypeText,(int)time];
                     sqlite3_exec(db, [saveRecentString UTF8String], NULL, NULL, NULL);
                     NSString *saveString = [NSString stringWithFormat:@"insert or replace into friends(uid,username,nick,avatar) values('%@','%@','%@','%@')",targetId,[object objectForKey:@"username"],[object objectForKey:@"nick"],[object objectForKey:@"avatar"]];
                     sqlite3_exec(db, [saveString UTF8String], NULL, NULL, NULL);
@@ -190,7 +189,7 @@
 }
 
 -(NSString *)databasePath{
-    NSString *databaseName      =  [NSString stringWithFormat:@"%@.db",[[BmobUser getCurrentUser] objectForKey:@"username"]];
+    NSString *databaseName      =  [NSString stringWithFormat:@"%@.db",[[BmobUser getCurrentUser] objectId]];
     NSArray  *paths             =  NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentDirecotry =  [paths objectAtIndex:0];
     NSString *path              =  [documentDirecotry stringByAppendingPathComponent:databaseName];
@@ -271,6 +270,48 @@
         }
         if (block) {
             block(isSuccessful,error);
+        }
+    }];
+}
+
+
+/**
+ *  查找未读消息
+ *
+ *  @param uid  用户id
+ *  @param block 返回的数组类型
+ */
+-(void)queryUnreadMessageFromServerWithUserId:(NSString *)uid block:(BmobObjectArrayResultBlock )block{
+    BmobQuery *query = [BmobQuery queryWithClassName:@"BmobMsg"];
+    query.limit = 1000;
+    [query whereKey:@"isReaded" equalTo:@(STATE_UNREAD)];
+    [query whereKey:@"toId" equalTo:uid];
+    [query orderByAscending:@"createdAt"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+        if (block) {
+            block(array,error);
+        }
+    }];
+
+}
+
+
+/**
+ *  把服务器上的数据设置为已读
+ *
+ *  @param msg <#msg description#>
+ */
+-(void)serverMarkAsReaded:(BmobMsg *)msg{
+    if (msg.isReaded == STATE_READED) {
+        return;
+    }
+    BmobQuery *query = [BmobQuery queryWithClassName:@"BmobMsg"];
+    [query whereKey:@"msgTime" equalTo:msg.msgTime];
+    [query whereKey:@"conversationId" equalTo:msg.conversationId];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+        for (BmobObject *obj in array) {
+            [obj setObject:[NSNumber numberWithInt:STATE_READED] forKey:@"isReaded"];
+            [obj updateInBackground];
         }
     }];
 }

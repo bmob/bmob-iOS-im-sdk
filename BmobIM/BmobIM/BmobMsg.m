@@ -9,7 +9,6 @@
 #import "BmobMsg.h"
 
 #import "BmobIM.h"
-
 @implementation BmobMsg
 
 
@@ -77,7 +76,7 @@
     tmpMsg.belongUsername       = [user objectForKey:@"username"];
     tmpMsg.conversationId       = [NSString stringWithFormat:@"%@&%@",tmpMsg.belongId,targetId];
     tmpMsg.status               = statue;
-    tmpMsg.isReaded             = STATE_READED;
+    tmpMsg.isReaded             = STATE_UNREAD;
     NSString *currentTimeString = [NSString stringWithFormat:@"%.0f",[[NSDate date] timeIntervalSince1970]];
     tmpMsg.msgTime              = currentTimeString;
     return tmpMsg;
@@ -92,6 +91,7 @@
                               status:(NSInteger)status{
     
     BmobMsg *tmpMsg       = [[BmobMsg alloc] init];
+    tmpMsg.toId = toId;
     tmpMsg.belongAvatar   = user.avatar;
     tmpMsg.belongId       = user.objectId;
     tmpMsg.belongNick     = user.nick;

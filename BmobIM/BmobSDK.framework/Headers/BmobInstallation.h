@@ -36,10 +36,10 @@
 - (void)setDeviceTokenFromData:(NSData *)deviceTokenData;
 
 
-@property (nonatomic,readonly,retain) NSString *deviceType;
-@property (nonatomic,retain) NSString          *deviceToken;
-@property (nonatomic,assign) int               badge;
-@property (nonatomic, retain) NSArray          *channels;
+@property (nonatomic,copy   ) NSString *deviceType;
+@property (nonatomic,copy   ) NSString *deviceToken;
+@property (nonatomic,assign ) int      badge;
+@property (nonatomic, strong) NSArray  *channels;
 
 /**
  *  注册订阅频道

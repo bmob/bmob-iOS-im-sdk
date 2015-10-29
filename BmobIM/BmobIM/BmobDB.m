@@ -23,7 +23,6 @@
     self = [super init];
     if (self) {
         _databaseName = [databaseName copy ];
-//        [self createDataBase];
     }
     return self;
 }
@@ -45,11 +44,7 @@
 }
 
 +(instancetype)currentDatabase{
-    
-    NSString *username = [[BmobUser getCurrentUser] objectForKey:@"username"];
-    
-    
-    
+    NSString *username = [BmobUser getCurrentUser] .objectId;
     NSString *databaseName = [NSString stringWithFormat:@"%@.db",username];
     
     return [self databaseWithName:databaseName];
@@ -71,7 +66,9 @@
 #pragma mark util
 
 -(void)createDataBase{
-
+    if (!_databaseName || _databaseName.length == 0) {
+        return;
+    }
     sqlite3 *db;
     if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
         
@@ -88,9 +85,10 @@
          "content";// 消息内容
          "isreaded";// 读取状态：未读 // -0、已读状态-1
          "status";// 发送状态
+         "fttime":belongId toId time加起来组成unique
          */
         //聊天消息内容
-        NSString *createChatTableString   = [NSString stringWithFormat:@"create table if not exists chat(id integer primary key autoincrement,conversationid varchar(255),belongid varchar(255),belongaccount varchar(255),belongnick varchar(255),belongavatar text,msgtype integer,msgtime varchar(255),content text,isreaded integer default 0,status integer)"];
+        NSString *createChatTableString   = [NSString stringWithFormat:@"create table if not exists chat(id integer primary key autoincrement,conversationid varchar(255),belongid varchar(255),belongaccount varchar(255),belongnick varchar(255),belongavatar text,msgtype integer,msgtime integer,content text,isreaded integer default 0,status integer,fttime varchar(500) unique)"];
         
         sqlite3_exec(db, [createChatTableString UTF8String], NULL, NULL, NULL);
         
@@ -105,7 +103,7 @@
          msgtime                    时间
          */
         //消息列表
-        NSString *createRecentTableString = [NSString stringWithFormat:@"create table if not exists recent(id integer primary key autoincrement,recent_id varchar(255) unique,recent_username varchar(255),recent_nick varchar(255),recent_avatar text,last_message text,msgtype integer,msgtime varchar(255))"];
+        NSString *createRecentTableString = [NSString stringWithFormat:@"create table if not exists recent(id integer primary key autoincrement,recent_id varchar(255) unique,recent_username varchar(255),recent_nick varchar(255),recent_avatar text,last_message text,msgtype integer,msgtime integer,mid varchar(255) )"];
         sqlite3_exec(db, [createRecentTableString UTF8String], NULL, NULL, NULL);
         
         //好友请求
@@ -158,23 +156,33 @@
     
 }
 
-/**
- *  删除所有的聊天记录-用于清除缓存操作
- */
--(void)deleteAllRecent{
-    
+//删除某个人的聊天记录等
+-(void)deleteRecentAndChatWithUid:(NSString *)targertId{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         sqlite3 *db;
         if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
+            
+            sqlite3_exec(db, "BEGIN", NULL, NULL, NULL);
+            
             //删除聊天表
-            char *deleteChatTable   = "delete from chat";
-            sqlite3_exec(db, deleteChatTable, NULL, NULL, NULL);
+//            char *deleteChatTable   = [[NSString stringWithFormat:@"delete from chat where "] UTF8String];
+//            sqlite3_exec(db, deleteChatTable, NULL, NULL, NULL);
+            BmobUser *currentUser = [BmobUser getCurrentUser];
+            NSString *conID  = [NSString stringWithFormat:@"%@&%@",currentUser.objectId,targertId];
+            NSString *conID1 = [NSString stringWithFormat:@"%@&%@",targertId,currentUser.objectId];
+            NSString *deleteContact = [NSString stringWithFormat:@"delete from chat where conversationid='%@' or conversationid='%@';",conID,conID1];
+            sqlite3_exec(db, [deleteContact UTF8String], NULL, NULL, NULL);
+            
             //删除最近联系表
-            char *deleteRecentTable = "delete from recent";
-            sqlite3_exec(db, deleteRecentTable, NULL, NULL, NULL);
+            NSString *deleteOneRecent = [NSString stringWithFormat:@"delete from recent where recent_id = '%@'",targertId];
+            sqlite3_exec(db, [deleteOneRecent UTF8String], NULL, NULL, NULL);
+           
+            
+            sqlite3_exec(db, "COMMIT", NULL, NULL, NULL);
             
         }
-         sqlite3_close(db);
+        
+        sqlite3_close(db);
     });
 }
 
@@ -219,7 +227,7 @@
  */
 -(void)deleteMessagesWithUid:(NSString*)toId{
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         sqlite3 *db;
         if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
             BmobUser *currentUser = [BmobUser getCurrentUser];
@@ -229,25 +237,10 @@
             sqlite3_exec(db, [deleteContact UTF8String], NULL, NULL, NULL);
         }
         sqlite3_close(db);
-    });
+//    });
 }
 
-/**
- *  删除与指定用户之间的会话记录
- *
- *  @param targertId 指定用户的Id
- */
--(void)deleteRecentWithUid:(NSString*)targertId{
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        sqlite3 *db;
-        if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
-            NSString *deleteOneRecent = [NSString stringWithFormat:@"delete from recent where recent_id = '%@'",targertId];
-            sqlite3_exec(db, [deleteOneRecent UTF8String], NULL, NULL, NULL);
-        }
-        sqlite3_close(db);
-    });
-}
+
 
 /**
  *  获取本地数据库中存储的好友列表
@@ -314,10 +307,10 @@
     if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
         
         BmobUser *currentUser = [BmobUser getCurrentUser];
-        NSString *conID  = [NSString stringWithFormat:@"%@&%@",currentUser.objectId,toId];
+//        NSString *conID  = [NSString stringWithFormat:@"%@&%@",currentUser.objectId,toId];
         NSString *conID1 = [NSString stringWithFormat:@"%@&%@",toId,currentUser.objectId];
         
-        NSString *queryString = [NSString stringWithFormat: @"select count(1) from chat where (conversationid = '%@' or conversationid = '%@') and  isreaded = %d",conID,conID1 ,STATE_UNREAD];
+        NSString *queryString = [NSString stringWithFormat: @"select count(1) from chat where conversationid = '%@'  and  isreaded = %d",conID1 ,STATE_UNREAD];
         if (sqlite3_prepare_v2(db, [queryString UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             
             while (sqlite3_step(statement) == SQLITE_ROW) {
@@ -376,7 +369,7 @@
     sqlite3 *db;
     sqlite3_stmt *statement;
     if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
-        NSString *queryString = [NSString stringWithFormat:@"select count(1) from chat where status='%d'",STATE_UNREAD];
+        NSString *queryString = [NSString stringWithFormat:@"select count(1) from chat where isreaded= %d and conversationId like '%%%@%%'",STATE_UNREAD,[BmobUser getCurrentUser].objectId];
         if (sqlite3_prepare_v2(db, [queryString UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             while (sqlite3_step(statement)==SQLITE_ROW) {
                 count = sqlite3_column_int(statement, 0);
@@ -538,11 +531,23 @@
  *  @return 指定用户的消息
  */
 -(NSArray*)queryMessagesWithUid:(NSString*)toId page:(int)page{
-    
+
     if (page < 0) {
         return nil;
     }
-    
+   return  [self queryMessagesWithUid:toId limt:(page+1)*10];
+}
+
+/**
+ *  针对单聊 获取指定会话id的所有消息 findMessage，支持分页操作
+ *
+ *  @param toId 指定用户的id
+ *  @param limit 限制的条数
+ *
+ *  @return 指定用户的消息
+ */
+-(NSArray*)queryMessagesWithUid:(NSString*)toId limt:(int)limit{
+
     NSMutableArray *array = [NSMutableArray array];
     sqlite3 *db;
     sqlite3_stmt *statement;
@@ -552,8 +557,8 @@
     NSString *conID1 = [NSString stringWithFormat:@"%@&%@",toId,currentUser.objectId];
     
     if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
-        NSString *queryString = [NSString stringWithFormat: @"select * from chat where conversationid = '%@' or conversationid = '%@' order by id desc  limit %d ; ",conID,conID1,(page+1)*10];
-       
+        NSString *queryString = [NSString stringWithFormat: @"select * from chat where conversationid = '%@' or conversationid = '%@' order by msgtime desc  limit %d ; ",conID,conID1,limit];
+        
         if (sqlite3_prepare_v2(db, [queryString UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             while (sqlite3_step(statement) == SQLITE_ROW) {
                 BmobMsg *msg = [[BmobMsg alloc] init];
@@ -587,9 +592,10 @@
                 if (msgType) {
                     msg.msgType = msgType;
                 }
-                const char *msgTime = (char *)sqlite3_column_text(statement, 7);
+                //                const char *msgTime = (char *)sqlite3_column_text(statement, 7);
+                int msgTime = sqlite3_column_int(statement, 7);
                 if (msgTime) {
-                    NSString *msgTimeString = [[NSString alloc] initWithUTF8String:msgTime];
+                    NSString *msgTimeString = [NSString stringWithFormat:@"%d",msgTime];
                     msg.msgTime = msgTimeString;
                 }
                 const char *content = (char *)sqlite3_column_text(statement, 8);
@@ -614,74 +620,9 @@
     sqlite3_close(db);
     
     return array;
+
 }
 
-/**
- *  查询登陆用户所有会话列表
- *
- *  @return 查询登陆用户所有会话列表
- */
--(NSArray*)queryRecent{
-    
-    NSMutableArray *array = [NSMutableArray array];
-    sqlite3 *db;
-    sqlite3_stmt *statement;
-    
-    if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
-        NSString *queryString = @"select * from recent";
-        if (sqlite3_prepare_v2(db, [queryString UTF8String], -1, &statement, NULL) == SQLITE_OK) {
-            while (sqlite3_step(statement) == SQLITE_ROW) {
-                
-                BmobRecent *recent = [[BmobRecent alloc] init];
-                
-                const char *recent_id = (char *)sqlite3_column_text(statement, 1);
-                if (recent_id) {
-                    NSString *targetId = [[NSString alloc] initWithUTF8String:recent_id];
-                    recent.targetId = targetId;
-                }
-                
-                const char *recent_username = (char *)sqlite3_column_text(statement, 2);
-                if (recent_username) {
-                    NSString *targetName = [[NSString alloc] initWithUTF8String:recent_username];
-                    recent.targetName = targetName;
-                }
-                
-                const char *recent_nick = (char *)sqlite3_column_text(statement, 3);
-                if (recent_nick) {
-                    NSString *nick = [[NSString alloc] initWithUTF8String:recent_nick];
-                    recent.nick = nick;
-                }
-                
-                const char *recent_avatar = (char *)sqlite3_column_text(statement, 4);
-                if (recent_avatar) {
-                    NSString *avatar = [[NSString alloc] initWithUTF8String:recent_avatar];
-                    recent.avatar = avatar;
-                }
-                
-                const char *last_message = (char *)sqlite3_column_text(statement, 5);
-                if (last_message) {
-                    NSString *message = [[NSString alloc] initWithUTF8String:last_message];
-                    recent.message = message;
-                }
-                
-                int msgtype = sqlite3_column_int(statement, 6);
-                recent.type = msgtype;
-                
-                const char *time = (char *)sqlite3_column_text(statement, 7);
-                if (time) {
-                    NSString *timeString = [[NSString alloc] initWithUTF8String:time];
-                    recent.time = [timeString integerValue];
-                }
-                
-                [array addObject:recent];
-            }
-        }
-    }
-    sqlite3_finalize(statement);
-    sqlite3_close(db);
-    
-    return array;
-}
 
 /**
  *  重置未读消息
@@ -696,16 +637,25 @@
         BmobUser *currentUser = [BmobUser getCurrentUser];
         NSString *conID  = [NSString stringWithFormat:@"%@&%@",currentUser.objectId,toId];
         NSString *conID1 = [NSString stringWithFormat:@"%@&%@",toId,currentUser.objectId];
-
-        
         NSString *updateString = [NSString stringWithFormat:@"update chat set isreaded= %d where conversationid = '%@' or conversationid = '%@'",STATE_READED,conID,conID1];
-        
         sqlite3_exec(db, [updateString UTF8String], NULL, NULL, NULL);
         
     }
     sqlite3_close(db);
     
-    
+}
+
+/**
+ *  设置未读消息为已读
+ */
+-(void)resetUnread{
+    sqlite3 *db;
+    if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
+        NSString *updateString = [NSString stringWithFormat:@"update chat set isreaded= %d",STATE_READED];
+        sqlite3_exec(db, [updateString UTF8String], NULL, NULL, NULL);
+        
+    }
+    sqlite3_close(db);
 }
 
 /**
@@ -726,11 +676,6 @@
         }
         sqlite3_close(db);
     });
-    
-
-    
-    
-
 }
 
 /**
@@ -748,7 +693,7 @@
         
         sqlite3_exec(db, [saveString UTF8String], NULL, NULL, NULL);
         
-        NSString *saveRecentString = [NSString stringWithFormat:@"insert or replace into recent(recent_id,recent_username,recent_nick,recent_avatar,last_message,msgtype,msgtime) values('%@','%@','%@','%@','%@',%d,'%@')",message.fromId,message.fromname,message.nick,message.avatar,@"你们已经是好友,可以进行聊天了",1,[NSString stringWithFormat:@"%ld", (long)message.time]];
+        NSString *saveRecentString = [NSString stringWithFormat:@"insert or replace into recent(recent_id,recent_username,recent_nick,recent_avatar,last_message,msgtype,msgtime) values('%@','%@','%@','%@','%@',%d,%ld)",message.fromId,message.fromname,message.nick,message.avatar,@"你们已经是好友,可以进行聊天了",1,(long)message.time ];
         
        
         sqlite3_exec(db, [saveRecentString UTF8String], NULL, NULL, NULL);
@@ -788,14 +733,93 @@
 //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         sqlite3 *db;
         if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
-            
-            NSString *saveString = [NSString stringWithFormat:@"insert or replace into chat(conversationid,belongid,belongaccount,belongnick,belongavatar,msgtype,msgtime,content,isreaded,status) values('%@','%@','%@','%@','%@',%ld,'%@','%@',%ld,%ld)",message.conversationId,message.belongId,message.belongUsername,message.belongNick,message.belongAvatar,(long)message.msgType,message.msgTime,message.content,(long)message.isReaded,(long)message.status];
-            sqlite3_exec(db, [saveString UTF8String], NULL, NULL, NULL);
-            
+            [self saveMessage:message db:db ];
         }
         sqlite3_close(db);
 //    });
 }
+
+
+-(void)saveMessage:(BmobMsg *)message db:(sqlite3 *)db {
+
+     NSString *btTimeString = [NSString stringWithFormat:@"%@%@%@",message.belongId, message.toId,message.msgTime];
+
+     NSString *saveString = [NSString stringWithFormat:@"insert or replace into chat(conversationid,belongid,belongaccount,belongnick,belongavatar,msgtype,msgtime,content,isreaded,status,fttime) values('%@','%@','%@','%@','%@',%ld,%d,'%@',%ld,%ld,'%@')",message.conversationId,message.belongId,message.belongUsername,message.belongNick,message.belongAvatar,(long)message.msgType,[message.msgTime intValue],message.content,(long)message.isReaded,(long)message.status,btTimeString];
+   sqlite3_exec(db, [saveString UTF8String], NULL, NULL, NULL);
+}
+
+
+-(void)saveMessageFromServerWithArray:(NSArray *)array{
+    sqlite3 *db;
+    if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
+        sqlite3_exec(db, "BEGIN", NULL, NULL, NULL);
+        
+        for (BmobObject *obj in array) {
+            BmobMsg *message       = [[BmobMsg alloc] init];
+            message.belongId       = [obj objectForKey:@"belongId"];
+            message.belongUsername = [obj objectForKey:@"belongUsername"];
+            message.toId           = [obj objectForKey:@"toId"];
+            message.belongNick     = [obj objectForKey:@"belongNick"];
+            message.content        = [obj objectForKey:@"content"];
+            message.msgTime        = [NSString stringWithFormat:@"%d",[[obj objectForKey:@"msgTime"] intValue]];
+            
+            if ([obj objectForKey:@"belongAvatar"]) {
+                message.belongAvatar   = [obj objectForKey:@"belongAvatar"];
+            }
+            
+            if ([obj objectForKey:@"isReaded"]) {
+                message.isReaded = [[obj objectForKey:@"isReaded"] intValue];
+            }
+            message.conversationId = [obj objectForKey:@"conversationId"];
+            message.msgType        = [[obj objectForKey:@"msgType"] intValue];
+            if ([obj objectForKey:@"status"]) {
+                message.status = [[obj objectForKey:@"status"] intValue];
+            }
+            message.mid = obj.objectId;
+            [self saveMessage:message db:db ];
+            
+           
+           
+                
+                
+                NSInteger count = 0;
+                sqlite3_stmt *statement;
+                
+                NSString *queryString = [NSString stringWithFormat:@"select count(1) from recent where recent_id='%@'",[obj objectForKey:@"belongId"]];
+                if (sqlite3_prepare_v2(db, [queryString UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                    while (sqlite3_step(statement)==SQLITE_ROW) {
+                        count = sqlite3_column_int(statement, 0);
+                        break;
+                    }
+                }
+                
+                sqlite3_finalize(statement);
+                if (count == 0) {
+                    BmobRecent *recent = [[BmobRecent alloc] init];
+                    recent.avatar = [obj objectForKey:@"belongAvatar"];
+                    recent.message= [obj objectForKey:@"content"];
+                    recent.nick = [obj objectForKey:@"belongNick"];
+                    recent.targetId = [obj objectForKey:@"belongId"];
+                    recent.targetName = [obj objectForKey:@"belongUsername"];
+                    recent.time = [[obj objectForKey:@"msgTime"] intValue];
+                    recent.type = [[obj objectForKey:@"msgType"] intValue];
+                    recent.mid = obj.objectId;
+                    [self saveRecent:recent db:db];
+                }else{
+                    [self updateRecentTableWithUserId:[obj objectForKey:@"belongId"] content:[obj objectForKey:@"content"] msgTime:[[obj objectForKey:@"msgTime"] intValue] type:[[obj objectForKey:@"msgType"] intValue] db:db];
+                    
+                }
+            }
+        
+        
+        
+        
+        sqlite3_exec(db, "COMMIT", NULL, NULL, NULL);
+        
+    }
+    sqlite3_close(db);
+}
+
 
 /**
  *   保存或更新用户好友列表到本地数据
@@ -824,6 +848,10 @@
     
 }
 
+
+
+#pragma mark - recent 表 操作
+
 /**
  *  保存本地会话
  *
@@ -833,11 +861,243 @@
     
     sqlite3 *db;
     if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
-        NSString *saveString = [NSString stringWithFormat:@"insert or replace into recent(recent_id,recent_username,recent_nick,recent_avatar,last_message,msgtype,msgtime) values('%@','%@','%@','%@','%@',%ld,'%@')",recent.targetId,recent.targetName,recent.nick,recent.avatar,recent.message,(long)recent.type,[NSString stringWithFormat:@"%ld", (long)recent.time ]];
-        sqlite3_exec(db, [saveString UTF8String], NULL, NULL, NULL);
-        
+        [self saveRecent:recent db:db];
     }
     sqlite3_close(db);
+}
+
+-(void)saveRecent:(BmobRecent *)recent db:(sqlite3 *)db{
+    
+    sqlite3_stmt *statement;
+    //
+    int msgTime = 0;
+    NSString *queryString = [NSString stringWithFormat: @"select msgTime from recent  where  recent_id = '%@'; ",recent.targetId];
+    if (sqlite3_prepare_v2(db, [queryString UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+        while (sqlite3_step(statement) == SQLITE_ROW) {
+             msgTime = sqlite3_column_int(statement, 0);
+            break;
+        }
+    }
+    sqlite3_finalize(statement);
+    
+    if (recent.time  <= msgTime) {
+        return;
+    }
+    char *error = "";
+    NSString *saveString = [NSString stringWithFormat:@"insert or replace into recent(recent_id,recent_username,recent_nick,recent_avatar,last_message,msgtype,msgtime,mid) values('%@','%@','%@','%@','%@',%ld,%ld,'%@')",recent.targetId,recent.targetName,recent.nick,recent.avatar,recent.message,(long)recent.type, (long)recent.time ,recent.mid];
+    sqlite3_exec(db, [saveString UTF8String], NULL, NULL, &error);
+
+}
+
+
+/**
+ *  查询登陆用户所有会话列表
+ *
+ *  @return 查询登陆用户所有会话列表
+ */
+-(NSArray*)queryRecent{
+    
+    NSMutableArray *array = [NSMutableArray array];
+    sqlite3 *db;
+    sqlite3_stmt *statement;
+    
+    if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
+        NSString *queryString = @"select * from recent order by msgtime desc";
+        if (sqlite3_prepare_v2(db, [queryString UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+                BmobRecent *recent = [self turnQueryResultToRecent:statement];
+                [array addObject:recent];
+            }
+        }
+    }
+    sqlite3_finalize(statement);
+    sqlite3_close(db);
+    
+    return array;
+}
+
+/**
+ *  查找用户的最近的聊天信息
+ *
+ *  @param toId 某个用户
+ *
+ *  @return
+ */
+-(BmobRecent *)queryRecentWithUserId:(NSString *)toId{
+   
+    sqlite3 *db;
+    sqlite3_stmt *statement;
+    BmobRecent *recent = nil;
+    if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
+        NSString *queryString = [NSString stringWithFormat:@"select * from recent where recent_id = '%@'",toId ];;
+        if (sqlite3_prepare_v2(db, [queryString UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+                recent= [self turnQueryResultToRecent:statement];
+               
+            }
+        }
+    }
+    sqlite3_finalize(statement);
+    sqlite3_close(db);
+    
+    return recent;
+}
+
+
+-(BmobRecent *)turnQueryResultToRecent:(sqlite3_stmt *)statement{
+    BmobRecent *recent = [[BmobRecent alloc] init];
+    
+    const char *recent_id = (char *)sqlite3_column_text(statement, 1);
+    if (recent_id) {
+        NSString *targetId = [[NSString alloc] initWithUTF8String:recent_id];
+        recent.targetId = targetId;
+    }
+    
+    const char *recent_username = (char *)sqlite3_column_text(statement, 2);
+    if (recent_username) {
+        NSString *targetName = [[NSString alloc] initWithUTF8String:recent_username];
+        recent.targetName = targetName;
+    }
+    
+    const char *recent_nick = (char *)sqlite3_column_text(statement, 3);
+    if (recent_nick) {
+        NSString *nick = [[NSString alloc] initWithUTF8String:recent_nick];
+        recent.nick = nick;
+    }
+    
+    const char *recent_avatar = (char *)sqlite3_column_text(statement, 4);
+    if (recent_avatar) {
+        NSString *avatar = [[NSString alloc] initWithUTF8String:recent_avatar];
+        recent.avatar = avatar;
+    }
+    
+    const char *last_message = (char *)sqlite3_column_text(statement, 5);
+    if (last_message) {
+        NSString *message = [[NSString alloc] initWithUTF8String:last_message];
+        recent.message = message;
+    }
+    
+    int msgtype = sqlite3_column_int(statement, 6);
+    recent.type = msgtype;
+    
+    const char *time = (char *)sqlite3_column_text(statement, 7);
+    if (time) {
+        NSString *timeString = [[NSString alloc] initWithUTF8String:time];
+        recent.time = [timeString integerValue];
+    }
+    return recent;
+}
+
+
+/**
+ *  是否已存在聊天用户列表那里
+ *
+ *  @return 未读的消息
+ */
+-(BOOL)hasRecentWithUserId:(NSString *)toId{
+    
+    NSInteger count = 0;
+    sqlite3 *db;
+    sqlite3_stmt *statement;
+    if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
+        NSString *queryString = [NSString stringWithFormat:@"select count(1) from recent where recent_id='%@'",toId];
+        if (sqlite3_prepare_v2(db, [queryString UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            while (sqlite3_step(statement)==SQLITE_ROW) {
+                count = sqlite3_column_int(statement, 0);
+                break;
+            }
+        }
+    }
+    sqlite3_finalize(statement);
+    sqlite3_close(db);
+    
+    if (count == 0) {
+        return NO;
+    }else
+        return YES;
+}
+
+/**
+ *  更新聊天列表,头像，用户名等
+ */
+-(void)updateRecentTable:(NSArray *)array{
+    
+    sqlite3 *db;
+    if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
+        sqlite3_exec(db, "BEGIN", NULL, NULL, NULL);
+        
+        for (BmobUser *obj in array) {
+            NSString *username = obj.username;
+            BmobFile *avatorFile = [obj objectForKey:@"avatorFile"];
+            NSString *avatar =avatorFile.url;
+            NSString *nick = [obj objectForKey:@"nick"];
+            NSString *updateString = [NSString stringWithFormat:@"update recent set recent_username= '%@',recent_nick = '%@',recent_avatar = '%@'  where recent_id = '%@'",username,nick,avatar,obj.objectId];
+            
+            sqlite3_exec(db, [updateString UTF8String], NULL, NULL, NULL);
+            
+        }
+        sqlite3_exec(db, "COMMIT", NULL, NULL, NULL);
+    }
+    sqlite3_close(db);
+}
+
+/**
+ *  更新聊天的信息和时间
+ *
+ *  @param toId    用户
+ *  @param content 聊天的内容
+ *  @param msgTime 聊天的时间
+ */
+-(void)updateRecentTableWithUserId:(NSString *)toId content:(NSString *)content msgTime:(NSUInteger)msgTime type:(NSUInteger)type{
+    sqlite3 *db;
+    if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
+        [self updateRecentTableWithUserId:toId content:content msgTime:msgTime type:type db:db];
+    }
+    sqlite3_close(db);
+}
+
+-(void)updateRecentTableWithUserId:(NSString *)toId content:(NSString *)content msgTime:(NSUInteger)msgTime type:(NSUInteger)type db:(sqlite3 *)db{
+
+    NSString *updateString = [NSString stringWithFormat:@"update recent set last_message = '%@',msgtype = %ld,msgtime = %ld  where recent_id = '%@'",content,(unsigned long)type,(unsigned long)msgTime,toId];
+    sqlite3_exec(db, [updateString UTF8String], NULL, NULL, NULL);
+
+}
+
+/**
+ *  删除所有的聊天记录-用于清除缓存操作
+ */
+-(void)deleteAllRecent{
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        sqlite3 *db;
+        if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
+            //删除聊天表
+            char *deleteChatTable   = "delete from chat";
+            sqlite3_exec(db, deleteChatTable, NULL, NULL, NULL);
+            //删除最近联系表
+            char *deleteRecentTable = "delete from recent";
+            sqlite3_exec(db, deleteRecentTable, NULL, NULL, NULL);
+            
+        }
+        sqlite3_close(db);
+    });
+}
+
+/**
+ *  删除与指定用户之间的会话记录
+ *
+ *  @param targertId 指定用户的Id
+ */
+-(void)deleteRecentWithUid:(NSString*)targertId{
+    
+    //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    sqlite3 *db;
+    if (sqlite3_open([[self databasePath] UTF8String], &db) == SQLITE_OK) {
+        NSString *deleteOneRecent = [NSString stringWithFormat:@"delete from recent where recent_id = '%@'",targertId];
+        sqlite3_exec(db, [deleteOneRecent UTF8String], NULL, NULL, NULL);
+    }
+    sqlite3_close(db);
+    //    });
 }
 
 /**

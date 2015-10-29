@@ -22,16 +22,11 @@
 #import "BmobInvitation.h"
 #import "BmobRecent.h"
 #import "BmobUserManager.h"
+#import "BmobChatManager.h"
 
 //BmobIMSDKVersion   1.0.2
 
-typedef enum {
-    TAG_ADD_CONTACT          = 0, //标签消息种类:添加好友
-    TAG_ADD_AGREE            = 1, //标签消息种类:同意添加好友
-    TAG_READED               = 2, //标签消息种类:已读
-    TAG_RECEIVERED           = 3, //标签消息种类:已收到
-    TAG_OFFLINE              = 4  //标签消息种类:下线
-}BmobIMMsgTag;
+
 
 typedef enum {
     STATE_UNREAD             = 0, //消息是未读状态的
@@ -67,7 +62,7 @@ typedef enum {
 #define  PUSH_KEY_MSGTYPE           @"mt"
 #define  PUSH_KEY_TAG               @"tag"
 #define  PUSH_KEY_TARGETAVATAR      @"fa"
-#define  PUSH_KEY_TARGETID          @"fId"
+#define  PUSH_KEY_FROMID            @"fId"
 #define  PUSH_KEY_TOID              @"tId"
 #define  PUSH_KEY_TARGETNICK        @"fn"
 #define	 PUSH_KEY_TARGETUSERNAME    @"fu"

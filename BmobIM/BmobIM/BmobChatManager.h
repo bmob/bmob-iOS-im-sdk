@@ -12,6 +12,14 @@
 #import "BmobMsg.h"
 #import <BmobSDK/Bmob.h>
 
+typedef enum {
+    TAG_ADD_CONTACT          = 0, //标签消息种类:添加好友
+    TAG_ADD_AGREE            = 1, //标签消息种类:同意添加好友
+    TAG_READED               = 2, //标签消息种类:已读
+    TAG_RECEIVERED           = 3, //标签消息种类:已收到
+    TAG_OFFLINE              = 4  //标签消息种类:下线
+}BmobIMMsgTag;
+
 @interface BmobChatManager : NSObject
 
 /**
@@ -86,4 +94,19 @@
                                 user:(BmobChatUser *)chatUser
                                block:(BmobBooleanResultBlock)block;
 
+
+/**
+ *  查找未读消息
+ *
+ *  @param uid  用户id
+ *  @param block 返回的数组类型
+ */
+-(void)queryUnreadMessageFromServerWithUserId:(NSString *)uid block:(BmobObjectArrayResultBlock )block;
+
+/**
+ *  把服务器上的数据设置为已读
+ *
+ *  @param msg <#msg description#>
+ */
+-(void)serverMarkAsReaded:(BmobMsg *)msg;
 @end

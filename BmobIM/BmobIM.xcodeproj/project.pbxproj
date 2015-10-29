@@ -26,7 +26,6 @@
 		BE6E0ABF19580DBC00796F38 /* BmobUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6E0ABD19580DBC00796F38 /* BmobUserManager.m */; };
 		BE7177571953CDCD009B5BD4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE7177561953CDCD009B5BD4 /* SystemConfiguration.framework */; };
 		BE7177591953CDD9009B5BD4 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE7177581953CDD9009B5BD4 /* CoreTelephony.framework */; };
-		BE71775D1953D119009B5BD4 /* BmobSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE71775C1953D119009B5BD4 /* BmobSDK.framework */; };
 		BE7177601953D585009B5BD4 /* BmobChatInstalltion.h in Headers */ = {isa = PBXBuildFile; fileRef = BE71775E1953D585009B5BD4 /* BmobChatInstalltion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BE7177611953D585009B5BD4 /* BmobChatInstalltion.m in Sources */ = {isa = PBXBuildFile; fileRef = BE71775F1953D585009B5BD4 /* BmobChatInstalltion.m */; };
 		BE7177641953E570009B5BD4 /* BmobChatManager.h in Headers */ = {isa = PBXBuildFile; fileRef = BE7177621953E570009B5BD4 /* BmobChatManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -38,8 +37,8 @@
 		BE717773195421DF009B5BD4 /* BmobIM.h in Headers */ = {isa = PBXBuildFile; fileRef = BE717772195421DF009B5BD4 /* BmobIM.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BE71777D1954519A009B5BD4 /* BmobDB.h in Headers */ = {isa = PBXBuildFile; fileRef = BE71777B1954519A009B5BD4 /* BmobDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BE71777E1954519A009B5BD4 /* BmobDB.m in Sources */ = {isa = PBXBuildFile; fileRef = BE71777C1954519A009B5BD4 /* BmobDB.m */; };
-		BE717780195451B9009B5BD4 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE71777F195451B9009B5BD4 /* libsqlite3.dylib */; };
 		BE878C1E195ABB5200A58A7C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE878C1D195ABB5200A58A7C /* UIKit.framework */; };
+		BEC8BE271BE1B6FF00007BBA /* BmobSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEC8BE261BE1B6FF00007BBA /* BmobSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,7 +65,6 @@
 		BE6E0ABD19580DBC00796F38 /* BmobUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BmobUserManager.m; sourceTree = "<group>"; };
 		BE7177561953CDCD009B5BD4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		BE7177581953CDD9009B5BD4 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
-		BE71775C1953D119009B5BD4 /* BmobSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BmobSDK.framework; sourceTree = "<group>"; };
 		BE71775E1953D585009B5BD4 /* BmobChatInstalltion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BmobChatInstalltion.h; sourceTree = "<group>"; };
 		BE71775F1953D585009B5BD4 /* BmobChatInstalltion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BmobChatInstalltion.m; sourceTree = "<group>"; };
 		BE7177621953E570009B5BD4 /* BmobChatManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BmobChatManager.h; sourceTree = "<group>"; };
@@ -80,6 +78,8 @@
 		BE71777C1954519A009B5BD4 /* BmobDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BmobDB.m; sourceTree = "<group>"; };
 		BE71777F195451B9009B5BD4 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		BE878C1D195ABB5200A58A7C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		BEC8BE261BE1B6FF00007BBA /* BmobSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BmobSDK.framework; sourceTree = "<group>"; };
+		BEC8BE281BE1BBB400007BBA /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,12 +88,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE878C1E195ABB5200A58A7C /* UIKit.framework in Frameworks */,
-				BE717780195451B9009B5BD4 /* libsqlite3.dylib in Frameworks */,
 				BE7177591953CDD9009B5BD4 /* CoreTelephony.framework in Frameworks */,
 				BE7177571953CDCD009B5BD4 /* SystemConfiguration.framework in Frameworks */,
 				BE33ADA51952D9CB00ADC677 /* Foundation.framework in Frameworks */,
+				BEC8BE271BE1B6FF00007BBA /* BmobSDK.framework in Frameworks */,
 				BE33AD941952D8F000ADC677 /* CoreFoundation.framework in Frameworks */,
-				BE71775D1953D119009B5BD4 /* BmobSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,9 +119,10 @@
 		BE33AD671952D8C100ADC677 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BEC8BE281BE1BBB400007BBA /* libsqlite3.tbd */,
+				BEC8BE261BE1B6FF00007BBA /* BmobSDK.framework */,
 				BE878C1D195ABB5200A58A7C /* UIKit.framework */,
 				BE71777F195451B9009B5BD4 /* libsqlite3.dylib */,
-				BE71775C1953D119009B5BD4 /* BmobSDK.framework */,
 				BE7177581953CDD9009B5BD4 /* CoreTelephony.framework */,
 				BE7177561953CDCD009B5BD4 /* SystemConfiguration.framework */,
 				BE33AD681952D8C100ADC677 /* Foundation.framework */,

@@ -10,6 +10,8 @@
 #import <BmobSDK/Bmob.h>
 
 @interface BmobChatUser : BmobUser
+
+
 /**
  *  头像
  */

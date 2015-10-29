@@ -16,41 +16,29 @@
 /**
  *	文件名
  */
-@property(nonatomic,retain)NSString  *name;
+@property(nonatomic,copy)NSString  *name;
 
 /**
  *	文件的地址
  */
-@property(nonatomic,retain)NSString  *url;
+@property(nonatomic,copy)NSString  *url;
 
 /**
  *	文件的组名
  */
-@property(nonatomic,retain)NSString  *group;
+@property(nonatomic,copy)NSString  *group;
 
 
 
-/**
- *	创建BmobFile对象
- *
- *	@param	className	关联的数据库表名
- *	@param	filePath	文件路径
- *
- *	@return	BmobFile对象实例
+/*!
+ DEPRECATED: 使用-(id)initWithFilePath:(NSString*)filePath;代替
  */
 -(id)initWithClassName:(NSString*)className withFilePath:(NSString*)filePath;
 
-/**
- *  创建BmobFile对象
- *
- *  @param className 关联的数据库表名
- *  @param fileName  文件名称，请加上后缀
- *  @param data      二进制数据
- *
- *  @return BmobFile对象实例
+/*!
+ DEPRECATED: 使用-(id)initWithFileName:(NSString*)fileName  withFileData:(NSData*)data;代替
  */
 -(id)initWithClassName:(NSString *)className  withFileName:(NSString*)fileName  withFileData:(NSData*)data;
-
 
 /**
  *  创建BmobFile对象
@@ -101,6 +89,14 @@
 -(void)saveInBackgroundByDataSharding:(BmobBooleanResultBlock)block;
 
 /**
+ *  以分片的方式上传文件
+ *
+ *  @param block         返回保存的结果与信息，如果保存成功则无返回信息
+ *  @param progressBlock 上传文件的进度
+ */
+-(void)saveInBackgroundByDataSharding:(BmobBooleanResultBlock)block progressBlock:(void(^)(float progress))progressBlock;
+
+/**
  *  异步请求删除文件
  */
 -(void)deleteInBackground;
@@ -115,6 +111,30 @@
 /**
  *  取消上传
  */
--(void)cancle;
+-(void)cancel;
+
+/**
+ *  批量上传文件
+ *
+ *  @param pathArray 路径数组
+ *  @param progress  当前第几个，当前文件的进度
+ *  @param block     BmobFile数组，上传结果和失败信息
+ */
++(void)filesUploadBatchWithPaths:(NSArray *)pathArray
+                   progressBlock:(BmobFileBatchProgressBlock)progress
+                     resultBlock:(BmobFileBatchResultBlock)block;
+
+
+/**
+ *  批量上传文件
+ *
+ *  @param dataArray 数组中存放的NSDictionary，NSDictionary里面的格式为@{@"filename":@"你的文件名",@"data":图片的data}
+ *  文件名需要带后缀
+ *  @param progress  当前第几个，当前文件的进度
+ *  @param block     BmobFile数组，上传结果和失败信息
+ */
++(void)filesUploadBatchWithDataArray:(NSArray *)dataArray
+                       progressBlock:(BmobFileBatchProgressBlock)progress
+                         resultBlock:(BmobFileBatchResultBlock)block;
 
 @end

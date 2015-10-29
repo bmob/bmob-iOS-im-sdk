@@ -121,4 +121,21 @@
  */
 -(void)queryNearbyWithKey:(NSString *)key location:(BmobGeoPoint *)location page:(NSInteger)page block:(BmobObjectArrayResultBlock)block;
 
+/**
+ *  添加到黑名单,用户可在回调里处理其他操作，例如删除本地会话等。。。
+ *
+ *  @param objectId 用户的objectId
+ *  @param block    添加成功与否
+ */
+-(void)addToBlackListWithUserID:(NSString *)objectId completion:(BmobBooleanResultBlock)block;
+
+
+/**
+ *  移除黑名单
+ *
+ *  @param objectId 用户的objectId
+ *  @param block    添加成功与否
+ */
+-(void)removeBlackListWithUserID:(NSString *)objectId completion:(BmobBooleanResultBlock)block;
+
 @end

@@ -12,7 +12,7 @@
 
 @implementation BmobUserManager
 
-
+#define kBlackList @"blacklist"
 +(instancetype)currentUserManager{
     
     static BmobUserManager *userManager = nil;
@@ -233,7 +233,7 @@
 
 -(void)loginWithUsername:(NSString *)username password:(NSString*)password block:(BmobBooleanResultBlock)block{
     
-    [BmobUser logInWithUsernameInBackground:username password:password block:^(BmobUser *user, NSError *error) {
+    [BmobUser loginWithUsernameInBackground:username password:password block:^(BmobUser *user, NSError *error) {
         if (!error) {
             block(YES,nil);
         }else{
@@ -303,7 +303,7 @@
 }
 
 -(NSString *)databasePath{
-    NSString *databaseName = [NSString stringWithFormat:@"%@.db",[[BmobUser getCurrentUser] objectForKey:@"username"]];
+    NSString *databaseName = [NSString stringWithFormat:@"%@.db",[BmobUser getCurrentUser].objectId];
     NSArray  *paths        = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentDirecotry =[paths objectAtIndex:0];
     NSString *path         = [documentDirecotry stringByAppendingPathComponent:databaseName];
@@ -346,20 +346,16 @@
     
     BmobQuery *query = [BmobQuery queryForUser];
     query.limit      = 20;
-//    query.skip       = page * 10;
+    query.skip       = page * 10;
     [query whereKeyExists:key];
-    [query whereKey:@"sex" notEqualTo:[NSNumber numberWithBool:YES]];
     [query whereKey:key nearGeoPoint:location ];
-//    [query whereKey:@"username" notContainedIn:[self selfAndFriendArray]];
+    [query whereKey:@"username" notContainedIn:[self selfAndFriendArray]];
     [query findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
         if (block) {
             
             block(array,error);
         }
     }];
-    
-    
-    
 }
 
 
@@ -387,5 +383,62 @@
     sqlite3_close(db);
     return nameArray;
 }
+
+
+/**
+ *  添加到黑名单
+ *
+ *  @param objectId 用户的objectId
+ *  @param block    添加成功与否
+ */
+-(void)addToBlackListWithUserID:(NSString *)objectId completion:(BmobBooleanResultBlock)block{
+    if (!objectId || [objectId isEqualToString:@""]) {
+        if (block) {
+            NSString *message = @"none objectid!";
+            NSError *error = [NSError errorWithDomain:@"IMError" code:20003 userInfo:@{NSLocalizedDescriptionKey:message,@"error":message}];
+            block(NO,error);
+        }
+    }else{
+        BmobUser *user         = [BmobUser getCurrentUser];
+        BmobUser *blackUser    = [BmobUser objectWithoutDatatWithClassName:nil objectId:objectId];
+        BmobRelation *relation = [[BmobRelation alloc] init];
+        [relation addObject:blackUser];
+        [user addRelation:relation forKey:kBlackList];
+        [user updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+            if (block) {
+                block(isSuccessful,error);
+            }
+        }];
+    }
+}
+
+
+/**
+ *  移除黑名单
+ *
+ *  @param objectId 用户的objectId
+ *  @param block    添加成功与否
+ */
+-(void)removeBlackListWithUserID:(NSString *)objectId completion:(BmobBooleanResultBlock)block{
+    if (!objectId || [objectId isEqualToString:@""]) {
+        if (block) {
+            NSString *message = @"none objectid!";
+            NSError *error = [NSError errorWithDomain:@"IMError" code:20003 userInfo:@{NSLocalizedDescriptionKey:message,@"error":message}];
+            block(NO,error);
+        }
+    }else{
+        BmobUser *user         = [BmobUser getCurrentUser];
+        BmobUser *blackUser    = [BmobUser objectWithoutDatatWithClassName:nil objectId:objectId];
+        BmobRelation *relation = [[BmobRelation alloc] init];
+        [relation removeObject :blackUser];
+        [user addRelation:relation forKey:kBlackList];
+        [user updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+            if (block) {
+                block(isSuccessful,error);
+            }
+        }];
+    }
+}
+
 
 @end
