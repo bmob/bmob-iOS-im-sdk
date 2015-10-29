@@ -24,7 +24,7 @@
 #import "BmobUserManager.h"
 #import "BmobChatManager.h"
 
-//BmobIMSDKVersion   1.0.2
+//BmobIMSDKVersion   1.0.1
 
 
 

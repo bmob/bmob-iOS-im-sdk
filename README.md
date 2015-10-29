@@ -13,9 +13,13 @@ cmd + b 可以直接生成framework，开发者也可以直接把源码拷到自
 #### 修复的内容
 1. 修复保存到聊天表中没有添加toId和belongAvatar的bug
 2. 更改为先保存信息，保存成功后再发送推送，如果用户没有允许推送的话，则只会在服务器保存信息，不会发送推送
+3. 
+```
+PUSH_KEY_TARGETID 更换为PUSH_KEY_FROMID 
+```
 
 #### 添加的内容
-1. BmobChatManager 类
+__BmobChatManager类__
 
 1)添加查找获取未读消息的方法：
 
@@ -28,21 +32,21 @@ cmd + b 可以直接生成framework，开发者也可以直接把源码拷到自
 -(void)serverMarkAsReaded:(BmobMsg *)msg;
 ```
 
-2. BmobDB类
+__BmobDB类__
 
 数据库名称更换为用objectId命名，避免用户名更改后数据库名称变化,如果之前用过BmobIM,请注意数据库名称的变化
 
 聊天表添加fttime字段以确保信息唯一
 
-3. BmobMsg类
+__BmobMsg类__
  
 添加toId属性
 
-4. BmobRecent类
+__BmobRecent类__
 
 添加count 属性
 
-5. BmobUserManager类
+__BmobUserManager类__
 
 1)添加  添加到黑名单的方法
 
